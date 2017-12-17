@@ -4,7 +4,7 @@
 #include <string>
 using namespace std;
 
-bool CharisNum(const char& a)
+bool CharisNum(const char& a)	//Function that returns whether char represents a number between 0 and 9
 {
 	return (a >= 48 && a <= 57);
 }
@@ -12,32 +12,32 @@ bool CharisNum(const char& a)
 class Calculator
 {
 private:
-	Stack<char> postfix;
-	Stack<int> calc;
-	string output[30];
+	Stack<char> postfix; //a char Stack is used to manage the order of the symbols
+	Stack<int> calc;	
+	string output[30];	//string array is used so that numbers and symbols can both be added.
 	int outCur;
-	string infix;
+	string infix;		
 public:
 	Calculator(string i)
 	{
 		outCur = 0;
 		infix = i;
 	};
-	void in_PostFix()
+	void in_PostFix()	//member function converts a string math equation into postfix notation
 	{
 		int const SIZE = infix.length();
-		for (int i = 0; i < SIZE; i++)
+		for (int i = 0; i < SIZE; i++)	//for statement garantees it goes through the entire string statement once
 		{
-			if (CharisNum(infix[i]))
+			if (CharisNum(infix[i]))	
 			{
 				int n = infix[i] - 48;
-				while (i + 1 != SIZE&&CharisNum(infix[i + 1]))
+				while (i + 1 != SIZE&&CharisNum(infix[i + 1]))	//this is for values with multiple digits
 				{
-					i++;
-					n *= 10;
-					n += infix[i] - 48;
+					i++;		//ensures it is moving through the string
+					n *= 10;	//each value is multiplied by 10
+					n += infix[i] - 48;		//and it is added the next in line
 				}
-				output[outCur] = to_string(n);
+				output[outCur] = to_string(n);	//value is being added into the string array
 				outCur++;
 			}
 			else if (infix[i] == '(')
@@ -58,7 +58,7 @@ public:
 			{
 				postfix.push(infix[i]);
 			}
-			else if (infix[i] == '*' || infix[i] == '/')
+			else if (infix[i] == '*' || infix[i] == '/')		//this chunk of code ensures it has higher priority to + or -
 			{
 				while (postfix.top() == '^')
 				{
@@ -81,7 +81,7 @@ public:
 				postfix.push(infix[i]);
 			}
 		}
-		while (!postfix.isEmpty())
+		while (!postfix.isEmpty()) //this empties the entire stack of char into the post fix string array
 		{
 			output[outCur] = postfix.top();
 			postfix.pop();
